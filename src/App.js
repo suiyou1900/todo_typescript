@@ -1,13 +1,18 @@
 import './App.css';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 function App() {
 
   const[inputValue,setInputValue]=useState('');
   const[todos,setTodos]=useState([]);
+   
 
   const handleClick=(e)=>{
   e.preventDefault();
+
+  if (inputValue === '') {
+    return;
+  }
 
   const newTodo = {
     id: todos.length + 1, 
@@ -16,12 +21,16 @@ function App() {
 
   setTodos([...todos, newTodo]);
   setInputValue('');
-
   console.log(newTodo);
   }
 
   const handleChange=(e)=>{
     setInputValue(e.target.value);
+  }
+
+  const handleDelete=(id)=>{
+    const newTodos = todos.filter(todo => todo.id !== id);
+    setTodos(newTodos);
   }
 
 
@@ -35,7 +44,7 @@ function App() {
 
      <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.inputValue}</li>         
+          <li key={todo.id}>{todo.inputValue}<button onClick={() => handleDelete(todo.id)}>削除する</button></li>
           ))}
       </ul>
     </div>
