@@ -1,5 +1,5 @@
 import './App.css';
-import { useState,useEffect } from 'react';
+import { useState } from 'react';
 
 function App() {
 
@@ -21,7 +21,6 @@ function App() {
 
   setTodos([...todos, newTodo]);
   setInputValue('');
-  console.log(newTodo);
   }
 
   const handleChange=(e)=>{
@@ -30,6 +29,17 @@ function App() {
 
   const handleDelete=(id)=>{
     const newTodos = todos.filter(todo => todo.id !== id);
+    setTodos(newTodos);
+  }
+
+  const handleEdit = (id, value) => {
+    const newTodos = todos.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, inputValue: value };
+      }
+      return todo;
+    });
+    
     setTodos(newTodos);
   }
 
@@ -44,7 +54,12 @@ function App() {
 
      <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.inputValue}<button onClick={() => handleDelete(todo.id)}>削除する</button></li>
+          <li key={todo.id}><input 
+          value={todo.inputValue} 
+          onChange={(e) => handleEdit(todo.id, e.target.value)}
+        />
+        <button onClick={() => handleDelete(todo.id)}>削除する</button>
+        </li>
           ))}
       </ul>
     </div>
